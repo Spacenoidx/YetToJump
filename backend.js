@@ -23,6 +23,16 @@ async function getRaces() {
 
 		if (response.ok) {
 			const data = await response.json();
+			// const trackCodeList = [];
+
+			// data.map((track) => {
+			// 	let trackCode = track.brisCode;
+			// 	trackCode = trackCode.toUpperCase();
+			// 	console.log(`Track code:  ${trackCode}`);
+
+			// 	trackCodeList.push(trackCode);
+			// });
+
 			// console.log(data);
 			return data;
 		} else {
@@ -33,12 +43,20 @@ async function getRaces() {
 	}
 }
 
-const data = getRaces();
+async function main() {
+	const trackData = await getRaces();
 
-console.log("Testing data");
-console.log(typeof data);
-console.log(data);
+	trackData.map((track) => {
+		let trackCode = track.brisCode;
+		trackCode = trackCode.toUpperCase();
+		console.log(`Track code:  ${trackCode}`);
 
+		trackCodeList.push(trackCode);
+	});
 
+	console.log("Testing data");
+	console.log(typeof data);
+	console.log(data);
+}
 
-
+main();
