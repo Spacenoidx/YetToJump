@@ -44,6 +44,7 @@ async function getRaces() {
 }
 
 async function main() {
+	const trackCodeList = [];
 	const trackData = await getRaces();
 
 	trackData.map((track) => {
@@ -54,9 +55,9 @@ async function main() {
 		trackCodeList.push(trackCode);
 	});
 
-	console.log("Testing data");
-	console.log(typeof data);
-	console.log(data);
+	console.log("Testing data from function named getRaces"); 
+	console.log(typeof trackata);
+	console.log(trackData);
 }
 
 main();
