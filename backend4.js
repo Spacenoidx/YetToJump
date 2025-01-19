@@ -15,54 +15,70 @@ const currentRacesURL =
 const trackCodeList = [];
 
 async function webScraping() {
-    let data; // Declare the variable outside the try block
+	let data; // Declare the variable outside the try block
 
-    try {
-        const response = await fetch(currentRacesURL, {
-            method: "GET",
-            headers,
-        });
+	try {
+		const response = await fetch(currentRacesURL, {
+			method: "GET",
+			headers,
+		});
 
-        console.log(`Status Code: ${response.status}`);
+		console.log(`Status Code: ${response.status}`);
 
-        if (response.ok) {
-            data = await response.json(); // Assign the value inside the try block
-            // console.log(data);
+		if (response.ok) {
+			data = await response.json(); // Assign the value inside the try block
+			// console.log(data);
 
-            // Write the JSON data to a file
-            // fs.writeFile("data.json", JSON.stringify(data, null, 2), (err) => {
-            //     if (err) {
-            //         console.error("Error writing to file", err);
-            //     } else {
-            //         console.log("JSON data saved to data.json");
-            //     }
-            // });
-        } else {
-            console.error("Failed to fetch data");
-        }
-    } catch (error) {
-        console.error("Error:", error);
-    }
+			// Write the JSON data to a file
+			// fs.writeFile("data.json", JSON.stringify(data, null, 2), (err) => {
+			//     if (err) {
+			//         console.error("Error writing to file", err);
+			//     } else {
+			//         console.log("JSON data saved to data.json");
+			//     }
+			// });
+		} else {
+			console.error("Failed to fetch data");
+		}
+	} catch (error) {
+		console.error("Error:", error);
+	}
 
-    if (data) {
-        // console.log(data);
-        data.map((track) => {
-            let trackCode = track.brisCode;
-            trackCode = trackCode.toUpperCase();
-            console.log(`Track code:  ${trackCode}`);
+	if (data) {
+		// console.log(data);
+		data.map((track) => {
+			let trackCode = track.brisCode;
+			trackCode = trackCode.toUpperCase();
+			// console.log(`Track code:  ${trackCode}`);
 
-            trackCodeList.push(trackCode);
-        });
-        
-    }
+			trackCodeList.push(trackCode);
+		});
+	}
 
-    return data; // Return data at the end of the function
+	return data; // Return data at the end of the function
 }
 
 async function getRaces() {
+	const trackData = await webScraping();
 
-    const trackData = await webScraping();
-    console.log(trackData);
+	trackData.map((track) => {
+		let track_Code = track.brisCode;
+		console.log("Races at the track:");
+		console.log(`Track code: ${track_Code}`);
+		let races = track.races;
+		races.forEach((race, index) => {
+			console.log(`Race ${index}`);
+
+			console.log(
+				`https://www.twinspires.com/adw/todays-tracks/${track_Code}/Thoroughbred/races/${index}/entries?affid=2800&bm-verify=AAQAAAAJ_5xIwKwEnMkoqJ7FPqocBIFzE22YQkx5TZWMj2PpJw1Q0ZDzVwBRfCp-iSZ-JcXRlzMy3Hp8pIchmSOoDy4SHRyJKr-NwY9inELmhmLYqU42oCQjQF-KPrMCDsROvfK49W_MWDXn_NKQmrVjOxIKpdglbyDHrLDLAzMMCd90BrlM4z-QODrrRh3RkNZR5r7oJboD2v4mslNwv0BA4pkxI4-WtJhsjvv_wAVBRb4dP67WnwAPMG-6QhENg8wl7trf_C9-9eQ9MkSyOXc1mmi7CcLiClRAXSQhcUlCvYa_m015FFouyzmWB2w6n3zudHTB6RHqwJk4yV4HUZmeYggJwwbV`
+			);
+		});
+
+		// console.log(races);
+		let secondURL = `https://www.twinspires.com/adw/todays-tracks/${track_Code}/Thoroughbred/races/1/entries?affid=2800&bm-verify=AAQAAAAJ_5xIwKwEnMkoqJ7FPqocBIFzE22YQkx5TZWMj2PpJw1Q0ZDzVwBRfCp-iSZ-JcXRlzMy3Hp8pIchmSOoDy4SHRyJKr-NwY9inELmhmLYqU42oCQjQF-KPrMCDsROvfK49W_MWDXn_NKQmrVjOxIKpdglbyDHrLDLAzMMCd90BrlM4z-QODrrRh3RkNZR5r7oJboD2v4mslNwv0BA4pkxI4-WtJhsjvv_wAVBRb4dP67WnwAPMG-6QhENg8wl7trf_C9-9eQ9MkSyOXc1mmi7CcLiClRAXSQhcUlCvYa_m015FFouyzmWB2w6n3zudHTB6RHqwJk4yV4HUZmeYggJwwbV`;
+		// console.log(secondURL);
+	});
+	// console.log(trackData);
 }
 
 getRaces();
