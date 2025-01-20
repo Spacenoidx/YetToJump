@@ -1,4 +1,5 @@
 const fs = require("fs");
+const { url } = require("inspector");
 
 const headers = {
 	"User-Agent":
@@ -54,24 +55,35 @@ async function webScraping() {
 			trackCodeList.push(trackCode);
 		});
 	}
-
-	return data; // Return data at the end of the function
+	tBredData = data.filter((track) => track.type === "Thoroughbred");
+	return tBredData; // Return data at the end of the function
 }
 
 async function getRaces() {
 	const trackData = await webScraping();
+	// console.log("Track Data: ", trackData);
 
 	trackData.map((track) => {
-		let track_Code = track.brisCode;
-		console.log("Races at the track:");
+		let track_Code = track.brisCode.toUpperCase();
+		let track_Name = track.name;
+		console.log(`Races at    ${track_Name}`);
 		console.log(`Track code: ${track_Code}`);
 		let races = track.races;
 		races.forEach((race, index) => {
-			console.log(`Race ${index}`);
+			let raceNumber = index + 1;
 
-			console.log(
-				`https://www.twinspires.com/adw/todays-tracks/${track_Code}/Thoroughbred/races/${index}/entries?affid=2800&bm-verify=AAQAAAAJ_5xIwKwEnMkoqJ7FPqocBIFzE22YQkx5TZWMj2PpJw1Q0ZDzVwBRfCp-iSZ-JcXRlzMy3Hp8pIchmSOoDy4SHRyJKr-NwY9inELmhmLYqU42oCQjQF-KPrMCDsROvfK49W_MWDXn_NKQmrVjOxIKpdglbyDHrLDLAzMMCd90BrlM4z-QODrrRh3RkNZR5r7oJboD2v4mslNwv0BA4pkxI4-WtJhsjvv_wAVBRb4dP67WnwAPMG-6QhENg8wl7trf_C9-9eQ9MkSyOXc1mmi7CcLiClRAXSQhcUlCvYa_m015FFouyzmWB2w6n3zudHTB6RHqwJk4yV4HUZmeYggJwwbV`
-			);
+			const RaceObject = {
+				raceNumber: raceNumber,
+				trackCode: track_Code,
+				raceURL: `https://www.twinspires.com/adw/todays-tracks/${track_Code}/Thoroughbred/races/${raceNumber}/entries?affid=2800&bm-verify=AAQAAAAJ_5xIwKwEnMkoqJ7FPqocBIFzE22YQkx5TZWMj2PpJw1Q0ZDzVwBRfCp-iSZ-JcXRlzMy3Hp8pIchmSOoDy4SHRyJKr-NwY9inELmhmLYqU42oCQjQF-KPrMCDsROvfK49W_MWDXn_NKQmrVjOxIKpdglbyDHrLDLAzMMCd90BrlM4z-QODrrRh3RkNZR5r7oJboD2v4mslNwv0BA4pkxI4-WtJhsjvv_wAVBRb4dP67WnwAPMG-6QhENg8wl7trf_C9-9eQ9MkSyOXc1mmi7CcLiClRAXSQhcUlCvYa_m015FFouyzmWB2w6n3zudHTB6RHqwJk4yV4HUZmeYggJwwbV`,
+			};
+			console.log(`\n Race ${RaceObject.raceNumber} AT ${RaceObject.trackCode} \n`);
+			console.log(RaceObject.raceURL);
+
+			// console.log(
+			// 	`https://www.twinspires.com/adw/todays-tracks/${track_Code}/Thoroughbred/races/${index}/entries?affid=2800&bm-verify=AAQAAAAJ_5xIwKwEnMkoqJ7FPqocBIFzE22YQkx5TZWMj2PpJw1Q0ZDzVwBRfCp-iSZ-JcXRlzMy3Hp8pIchmSOoDy4SHRyJKr-NwY9inELmhmLYqU42oCQjQF-KPrMCDsROvfK49W_MWDXn_NKQmrVjOxIKpdglbyDHrLDLAzMMCd90BrlM4z-QODrrRh3RkNZR5r7oJboD2v4mslNwv0BA4pkxI4-WtJhsjvv_wAVBRb4dP67WnwAPMG-6QhENg8wl7trf_C9-9eQ9MkSyOXc1mmi7CcLiClRAXSQhcUlCvYa_m015FFouyzmWB2w6n3zudHTB6RHqwJk4yV4HUZmeYggJwwbV`
+
+			// );
 		});
 
 		// console.log(races);
